@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+  }
+
+  ::selection {
+    @apply bg-brenn-yellow text-ink;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ffc107;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Signature element: hairline measurement-grid motif referencing the
+     product's own precision-cut grid. Used sparingly as section texture. */
+  .cut-grid-bg {
+    background-image: linear-gradient(to right, rgba(10, 10, 11, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 10, 11, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .cut-grid-bg-light {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .tick-corner {
+    position: relative;
+  }
+  .tick-corner::before,
+  .tick-corner::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ffc107;
+  }
+  .tick-corner::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+  .tick-corner::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs tracking-[0.2em] uppercase text-brenn-gold;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brenn-yellow px-7 py-3.5 font-display font-semibold text-ink transition-all duration-300 ease-premium hover:bg-brenn-yellow-dark hover:shadow-glow-yellow active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-transparent px-7 py-3.5 font-display font-semibold text-ink transition-all duration-300 ease-premium hover:border-ink hover:bg-ink hover:text-white active:scale-[0.98];
+  }
+
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display font-semibold text-white transition-all duration-300 ease-premium hover:bg-graphite active:scale-[0.98];
+  }
+
+  .card-glass {
+    @apply rounded-xl2 border border-white/40 bg-white/70 backdrop-blur-xl;
+  }
+
+  .section-pad {
+    @apply px-6 py-24 sm:px-10 lg:px-16;
+  }
+}
