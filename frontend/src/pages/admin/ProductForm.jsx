@@ -12,7 +12,7 @@ const emptyProduct = {
   category: "Kitchen Tools",
   amazonUrl: "",
   price: "",
-  currency: "USD",
+  currency: "INR",
   status: "draft",
   isFeatured: false,
   features: [""],
@@ -139,6 +139,13 @@ const ProductForm = () => {
             <div>
               <label className={labelClass}>Price</label>
               <input type="number" step="0.01" className={inputClass} value={product.price} onChange={(e) => updateField("price", e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Currency</label>
+              <select className={inputClass} value={product.currency} onChange={(e) => updateField("currency", e.target.value)}>
+                <option value="INR">INR (₹)</option>
+                <option value="USD">USD ($)</option>
+              </select>
             </div>
             <div>
               <label className={labelClass}>Status</label>

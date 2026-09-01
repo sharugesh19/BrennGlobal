@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
+import brennLogo from "../../assets/brenn_logo.png";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
-  { label: "Brownie Divider", to: "/products/brownie-divider" },
+  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
@@ -27,8 +28,11 @@ const Navbar = () => {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
-        <Link to="/" className="font-display text-xl font-extrabold tracking-tight">
-          BRENN <span className="text-brenn-yellow">GLOBAL</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src={brennLogo} alt="Brenn Global" className="h-9 w-auto object-contain" />
+          <span className="font-display text-xl font-extrabold tracking-tight">
+            BRENN <span className="text-brenn-yellow">GLOBAL</span>
+          </span>
         </Link>
 
         <ul className="hidden items-center gap-10 md:flex">
@@ -48,7 +52,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <Link to="/products/brownie-divider" className="btn-dark hidden md:inline-flex !py-2.5 !px-6 text-sm">
+        <Link to="/products" className="btn-dark hidden md:inline-flex !py-2.5 !px-6 text-sm">
           Buy Now
         </Link>
 
@@ -83,7 +87,7 @@ const Navbar = () => {
                 </li>
               ))}
               <li>
-                <Link to="/products/brownie-divider" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full">
+                <Link to="/products" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full">
                   Buy Now
                 </Link>
               </li>

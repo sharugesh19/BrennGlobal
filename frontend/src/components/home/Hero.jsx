@@ -9,10 +9,11 @@ const Hero = () => {
   const { content, loading } = useWebsiteContent();
   const { featured } = useProducts();
   const hero = content?.hero;
-  const heroImage = featured?.images?.find((i) => i.isPrimary)?.url || featured?.images?.[0]?.url;
+  const productImage = featured?.images?.find((i) => i.isPrimary)?.url || featured?.images?.[0]?.url;
+  const heroImage = hero?.bannerImage || productImage;
 
   return (
-    <section className="relative overflow-hidden pt-40 pb-24 sm:pt-48">
+    <section className="relative overflow-hidden pt-28 pb-24 sm:pt-32">
       {/* Signature ambient grid — echoes the product's own cut-guide lines */}
       <div className="cut-grid-bg pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
       <motion.div
@@ -66,7 +67,7 @@ const Hero = () => {
                 <Button href={hero?.primaryCtaUrl || featured?.amazonUrl || "https://www.amazon.com"}>
                   {hero?.primaryCtaLabel || "Buy on Amazon"}
                 </Button>
-                <Button variant="secondary" href="#featured-product">
+                <Button variant="secondary" href="/about">
                   {hero?.secondaryCtaLabel || "Learn More"}
                 </Button>
               </motion.div>
@@ -80,8 +81,8 @@ const Hero = () => {
             >
               <div className="overflow-hidden rounded-xl2 shadow-premium">
                 <img
-                  src={heroImage || "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1600&auto=format&fit=crop"}
-                  alt={featured?.title || "Brenn Precision Brownie Divider"}
+                  src={heroImage || "https://images.unsplash.com/photo-1615796701805-2094ac54bbf9?q=80&w=1600&auto=format&fit=crop"}
+                  alt={hero?.heading || featured?.title || "Brenn Global bakery tools"}
                   className="h-[480px] w-full object-cover"
                   loading="eager"
                 />

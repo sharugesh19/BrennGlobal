@@ -3,7 +3,7 @@ import { HiOutlineShieldCheck, HiOutlineBadgeCheck, HiOutlineCube, HiOutlineTruc
 
 const POINTS = [
   { icon: <HiOutlineBadgeCheck />, title: "Food Grade", desc: "Certified food-safe materials in every product we ship." },
-  { icon: <HiOutlineShieldCheck />, title: "Reliable", desc: "Backed by a 2-year limited warranty on manufacturing defects." },
+  { icon: <HiOutlineShieldCheck />, title: "Reliable", desc: "Built to perform consistently, batch after batch." },
   { icon: <HiOutlineCube />, title: "Durable", desc: "Engineered to withstand daily commercial-kitchen use." },
   { icon: <HiOutlineTruck />, title: "Precision Manufactured", desc: "Every batch is quality-checked before it leaves the factory." },
 ];

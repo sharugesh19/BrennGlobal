@@ -69,6 +69,18 @@ const Website = () => {
                 <input className={inputClass} value={content.hero.primaryCtaUrl} onChange={(e) => updateSection("hero", "primaryCtaUrl", e.target.value)} />
               </div>
             </div>
+            <div>
+              <label className={labelClass}>Hero Banner Image URL</label>
+              <input
+                className={inputClass}
+                placeholder="Upload via Media Manager, then paste URL here"
+                value={content.hero.bannerImage || ""}
+                onChange={(e) => updateSection("hero", "bannerImage", e.target.value)}
+              />
+              <p className="mt-1 text-xs text-slate">
+                Shown on the homepage. If left blank, the site falls back to your featured product's photo.
+              </p>
+            </div>
           </div>
         </section>
 

@@ -6,6 +6,7 @@ import WhatsAppButton from "../components/layout/WhatsAppButton.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
 const Home = lazy(() => import("../pages/Home.jsx"));
+const ProductsList = lazy(() => import("../pages/Products.jsx"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail.jsx"));
 const About = lazy(() => import("../pages/About.jsx"));
 const Contact = lazy(() => import("../pages/Contact.jsx"));
@@ -17,7 +18,6 @@ const Dashboard = lazy(() => import("../pages/admin/Dashboard.jsx"));
 const Products = lazy(() => import("../pages/admin/Products.jsx"));
 const ProductForm = lazy(() => import("../pages/admin/ProductForm.jsx"));
 const Website = lazy(() => import("../pages/admin/Website.jsx"));
-const Media = lazy(() => import("../pages/admin/Media.jsx"));
 const ContactEnquiries = lazy(() => import("../pages/admin/ContactEnquiries.jsx"));
 const Settings = lazy(() => import("../pages/admin/Settings.jsx"));
 
@@ -40,6 +40,7 @@ const AppRoutes = () => {
       <Routes>
         {/* Public site */}
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+        <Route path="/products" element={<PublicLayout><ProductsList /></PublicLayout>} />
         <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
         <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
         <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
@@ -59,7 +60,6 @@ const AppRoutes = () => {
           <Route path="products/new" element={<ProductForm />} />
           <Route path="products/:id/edit" element={<ProductForm />} />
           <Route path="website" element={<Website />} />
-          <Route path="media" element={<Media />} />
           <Route path="enquiries" element={<ContactEnquiries />} />
           <Route path="settings" element={<Settings />} />
         </Route>

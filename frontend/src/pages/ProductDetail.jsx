@@ -116,7 +116,7 @@ const ProductDetail = () => {
 
           {product.price && (
             <p className="mt-6 font-display text-2xl font-bold">
-              {product.currency === "USD" ? "$" : product.currency + " "}
+              {product.currency === "INR" ? "₹" : product.currency === "USD" ? "$" : product.currency + " "}
               {product.price}
             </p>
           )}
