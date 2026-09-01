@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "../components/layout/Navbar.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import WhatsAppButton from "../components/layout/WhatsAppButton.jsx";
+import Loader from "../components/ui/Loader.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
 const Home = lazy(() => import("../pages/Home.jsx"));
@@ -30,9 +31,7 @@ const PublicLayout = ({ children }) => (
   </>
 );
 
-const PageFallback = () => (
-  <div className="flex min-h-screen items-center justify-center text-sm text-slate">Loading…</div>
-);
+const PageFallback = () => <Loader fullScreen />;
 
 const AppRoutes = () => {
   return (
