@@ -33,7 +33,7 @@ const ComingSoon = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
         {teasers.map((t, i) => (
           <motion.div
             key={t.title}
@@ -41,7 +41,7 @@ const ComingSoon = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, delay: i * 0.08 }}
-            className="group relative overflow-hidden rounded-xl2 border border-ink/8 bg-cloud"
+            className="group relative w-[72%] shrink-0 snap-start overflow-hidden rounded-xl2 border border-ink/8 bg-cloud sm:w-auto sm:shrink"
           >
             <div className="flex h-56 items-center justify-center bg-gradient-to-br from-ink/5 to-ink/10 blur-[2px] transition-all duration-500 group-hover:blur-[1px]">
               <span className="font-mono text-5xl text-ink/10">?</span>

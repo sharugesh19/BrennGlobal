@@ -25,7 +25,7 @@ const WhyChooseUs = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-8 lg:grid-cols-4">
           {POINTS.map((p, i) => (
             <motion.div
               key={p.title}
@@ -33,11 +33,11 @@ const WhyChooseUs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="rounded-xl2 border border-white/10 p-7"
+              className="rounded-xl2 border border-white/10 p-4 sm:p-7"
             >
-              <div className="mb-5 text-3xl text-brenn-yellow">{p.icon}</div>
-              <h3 className="mb-2 font-display text-lg font-semibold">{p.title}</h3>
-              <p className="text-sm leading-relaxed text-white/60">{p.desc}</p>
+              <div className="mb-3 text-xl text-brenn-yellow sm:mb-5 sm:text-3xl">{p.icon}</div>
+              <h3 className="mb-1.5 font-display text-sm font-semibold sm:mb-2 sm:text-lg">{p.title}</h3>
+              <p className="text-xs leading-relaxed text-white/60 sm:text-sm">{p.desc}</p>
             </motion.div>
           ))}
         </div>

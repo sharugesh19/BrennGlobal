@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
 import brennLogo from "../../assets/brenn_logo.png";
 
@@ -14,12 +13,19 @@ const NAV_LINKS = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Always close the mobile menu when navigating to a new page, regardless
+  // of how the navigation happened (link tap, back/forward, programmatic).
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   return (
     <header
@@ -65,36 +71,28 @@ const Navbar = () => {
         </button>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden bg-white md:hidden"
-          >
-            <ul className="flex flex-col gap-1 px-6 pb-6">
-              {NAV_LINKS.map((link) => (
-                <li key={link.to}>
-                  <NavLink
-                    to={link.to}
-                    onClick={() => setOpen(false)}
-                    className="block py-3 font-body text-base font-medium text-ink"
-                  >
-                    {link.label}
-                  </NavLink>
-                </li>
-              ))}
-              <li>
-                <Link to="/products" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full">
-                  Buy Now
-                </Link>
+      {open && (
+        <div className="border-t border-ink/8 bg-white md:hidden">
+          <ul className="flex flex-col gap-1 px-6 pb-6 pt-2">
+            {NAV_LINKS.map((link) => (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  onClick={() => setOpen(false)}
+                  className="block py-3 font-body text-base font-medium text-ink"
+                >
+                  {link.label}
+                </NavLink>
               </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+            <li>
+              <Link to="/products" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full">
+                Buy Now
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 };

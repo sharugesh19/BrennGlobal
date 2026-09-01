@@ -92,4 +92,12 @@
   .section-pad {
     @apply px-6 py-24 sm:px-10 lg:px-16;
   }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
