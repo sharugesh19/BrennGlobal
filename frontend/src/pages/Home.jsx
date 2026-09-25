@@ -2,7 +2,6 @@ import SEO from "../components/seo/SEO.jsx";
 import Hero from "../components/home/Hero.jsx";
 import WhyBrenn from "../components/home/WhyBrenn.jsx";
 import FounderStory from "../components/home/FounderStory.jsx";
-import FeaturedProduct from "../components/home/FeaturedProduct.jsx";
 import WhyChooseUs from "../components/home/WhyChooseUs.jsx";
 import ComingSoon from "../components/home/ComingSoon.jsx";
 
@@ -17,7 +16,6 @@ const Home = () => {
       <Hero />
       <WhyBrenn />
       <FounderStory />
-      <FeaturedProduct />
       <WhyChooseUs />
       <ComingSoon />
     </>

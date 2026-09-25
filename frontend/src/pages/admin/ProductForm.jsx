@@ -221,19 +221,6 @@ const ProductForm = () => {
           <button type="button" onClick={() => addListItem("specifications", { label: "", value: "" })} className="mt-1 flex items-center gap-1 text-sm text-brenn-yellow-dark"><HiOutlinePlus /> Add specification</button>
         </div>
 
-        <div className="rounded-xl2 border border-ink/8 bg-white p-6">
-          <h2 className="mb-4 font-semibold">SEO</h2>
-          <div className="space-y-4">
-            <div>
-              <label className={labelClass}>Meta Title</label>
-              <input className={inputClass} value={product.seo.metaTitle} onChange={(e) => updateField("seo", { ...product.seo, metaTitle: e.target.value })} />
-            </div>
-            <div>
-              <label className={labelClass}>Meta Description</label>
-              <textarea rows={2} className={inputClass} value={product.seo.metaDescription} onChange={(e) => updateField("seo", { ...product.seo, metaDescription: e.target.value })} />
-            </div>
-          </div>
-        </div>
 
         <div className="flex gap-3">
           <button type="submit" disabled={saving} className="btn-primary">{saving ? "Saving…" : "Save Product"}</button>
