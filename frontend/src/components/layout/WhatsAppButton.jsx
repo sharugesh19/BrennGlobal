@@ -4,7 +4,7 @@ import useWebsiteContent from "../../hooks/useWebsiteContent.js";
 
 const WhatsAppButton = () => {
   const { content } = useWebsiteContent();
-  const number = content?.footer?.whatsappNumber || "15551234567";
+  const number = "918489999988"; // Hardcoded to bypass database dummy data
 
   return (
     <motion.a

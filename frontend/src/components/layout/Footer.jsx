@@ -56,9 +56,9 @@ const Footer = () => {
             Contact
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li>{footer?.phone || "+91 84899 99988"}</li>
-            <li>{footer?.email || "support@brennglobal.in"}</li>
-            <li>{footer?.address || "Udumalaipettai, Tamil Nadu, India"}</li>
+            <li>+91 84899 99988</li>
+            <li>support@brennglobal.in</li>
+            <li>Udumalaipettai, Tamil Nadu, India</li>
           </ul>
         </div>
       </div>

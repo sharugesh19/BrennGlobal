@@ -39,7 +39,7 @@ const Contact = () => {
               <HiOutlinePhone className="mt-1 text-xl text-brenn-yellow-dark" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-slate">Phone</p>
-                <p className="mt-1 font-medium">{footer?.phone || "+91 84899 99988"}</p>
+                <p className="mt-1 font-medium">+91 84899 99988</p>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const Contact = () => {
               <HiOutlineMail className="mt-1 text-xl text-brenn-yellow-dark" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-slate">Email</p>
-                <p className="mt-1 font-medium">{footer?.email || "support@brennglobal.in"}</p>
+                <p className="mt-1 font-medium">support@brennglobal.in</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ const Contact = () => {
               <HiOutlineLocationMarker className="mt-1 text-xl text-brenn-yellow-dark" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-slate">Address</p>
-                <p className="mt-1 font-medium">{footer?.address || "Udumalaipettai, Tamil Nadu, India"}</p>
+                <p className="mt-1 font-medium">Udumalaipettai, Tamil Nadu, India</p>
               </div>
             </div>
           </div>
