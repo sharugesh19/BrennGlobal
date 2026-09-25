@@ -29,16 +29,12 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-premium ${
-        scrolled ? "bg-white/80 shadow-sm backdrop-blur-xl" : "bg-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-premium ${scrolled ? "bg-white/80 shadow-sm backdrop-blur-xl" : "bg-transparent"
+        }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
         <Link to="/" className="flex items-center gap-2.5">
           <img src={brennLogo} alt="Brenn" className="h-9 w-auto object-contain" />
-          <span className="font-display text-xl font-extrabold tracking-tight">
-            BRENN
-          </span>
         </Link>
 
         <ul className="hidden items-center gap-10 md:flex">
@@ -47,8 +43,7 @@ const Navbar = () => {
               <NavLink
                 to={link.to}
                 className={({ isActive }) =>
-                  `font-body text-sm font-medium tracking-wide transition-colors ${
-                    isActive ? "text-ink" : "text-slate hover:text-ink"
+                  `font-body text-sm font-medium tracking-wide transition-colors ${isActive ? "text-ink" : "text-slate hover:text-ink"
                   }`
                 }
               >

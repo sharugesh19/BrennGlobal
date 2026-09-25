@@ -14,9 +14,6 @@ const Footer = () => {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <img src={brennLogo} alt="Brenn Global" className="h-9 w-auto rounded-md object-contain" />
-            <span className="font-display text-xl font-extrabold tracking-tight">
-              BRENN
-            </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
             {footer?.description ||
