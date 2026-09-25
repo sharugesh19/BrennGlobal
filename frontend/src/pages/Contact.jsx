@@ -10,13 +10,20 @@ const Contact = () => {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-40 sm:px-10 lg:px-16">
-      <SEO title="Contact Us" path="/contact" description="Get in touch with the Brenn Global team." />
+      <SEO title="Contact Us" path="/contact" description="Get in touch with the Brenn team." />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-14 max-w-xl">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mb-14 max-w-xl"
+      >
         <span className="eyebrow">Get In Touch</span>
-        <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">We'd love to hear from you.</h1>
+        <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          We&apos;d love to hear from you.
+        </h1>
         <p className="mt-4 text-slate">
-          Questions about the Brownie Divider, wholesale inquiries, or press — reach out and our
+          Questions about the Brownie Divider, wholesale inquiries, or press &mdash; reach out and our
           team will respond within one business day.
         </p>
       </motion.div>
@@ -27,37 +34,34 @@ const Contact = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl2 border border-ink/8 bg-white p-6">
+          <div className="rounded-xl border border-ink/8 bg-white p-6">
             <div className="flex items-start gap-3">
               <HiOutlinePhone className="mt-1 text-xl text-brenn-yellow-dark" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-slate">Phone</p>
-                <p className="mt-1 font-medium">{footer?.phone || "+1 (555) 123-4567"}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-xl2 border border-ink/8 bg-white p-6">
-            <div className="flex items-start gap-3">
-              <HiOutlineMail className="mt-1 text-xl text-brenn-yellow-dark" />
-              <div>
-                <p className="text-xs uppercase tracking-widest text-slate">Email</p>
-                <p className="mt-1 font-medium">{footer?.email || "hello@brennglobal.com"}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-xl2 border border-ink/8 bg-white p-6">
-            <div className="flex items-start gap-3">
-              <HiOutlineLocationMarker className="mt-1 text-xl text-brenn-yellow-dark" />
-              <div>
-                <p className="text-xs uppercase tracking-widest text-slate">Address</p>
-                <p className="mt-1 font-medium">{footer?.address || "Industrial Ave, Suite 400, Los Angeles, CA"}</p>
+                <p className="mt-1 font-medium">{footer?.phone || "+91 84899 99988"}</p>
               </div>
             </div>
           </div>
 
-          {/* Map placeholder — swap for a real embedded map once an address is finalized */}
-          <div className="flex h-48 items-center justify-center rounded-xl2 border border-ink/8 bg-cloud text-sm text-slate">
-            Map preview available once location is confirmed
+          <div className="rounded-xl border border-ink/8 bg-white p-6">
+            <div className="flex items-start gap-3">
+              <HiOutlineMail className="mt-1 text-xl text-brenn-yellow-dark" />
+              <div>
+                <p className="text-xs uppercase tracking-widest text-slate">Email</p>
+                <p className="mt-1 font-medium">{footer?.email || "support@brennglobal.in"}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-ink/8 bg-white p-6">
+            <div className="flex items-start gap-3">
+              <HiOutlineLocationMarker className="mt-1 text-xl text-brenn-yellow-dark" />
+              <div>
+                <p className="text-xs uppercase tracking-widest text-slate">Address</p>
+                <p className="mt-1 font-medium">{footer?.address || "Udumalaipettai, Tamil Nadu, India"}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

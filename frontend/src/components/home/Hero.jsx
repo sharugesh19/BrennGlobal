@@ -4,56 +4,61 @@ import Button from "../ui/Button.jsx";
 import useWebsiteContent from "../../hooks/useWebsiteContent.js";
 import useProducts from "../../hooks/useProducts.js";
 import { HeroSkeleton } from "../ui/Skeleton.jsx";
+import uncutBrownie from "../../assets/uncut-brownie.png";
 
 const Hero = () => {
   const { content, loading } = useWebsiteContent();
   const { featured } = useProducts();
   const hero = content?.hero;
-  const productImage = featured?.images?.find((i) => i.isPrimary)?.url || featured?.images?.[0]?.url;
-  const heroImage = hero?.bannerImage || productImage;
+  
+  // Using the uploaded uncut brownie image
+  const heroImage = uncutBrownie;
 
   return (
-    <section className="relative overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-24 lg:pt-32">
-      {/* Signature ambient grid — echoes the product's own cut-guide lines */}
-      <div className="cut-grid-bg pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
+    <section className="relative overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 min-h-[90vh] flex flex-col justify-center">
+      
+      {/* Background Yellow Glow */}
       <motion.div
         aria-hidden
-        animate={{ y: [0, 20, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -right-32 top-24 h-96 w-96 rounded-full bg-brenn-yellow/20 blur-3xl"
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute -right-32 top-10 h-[500px] w-[500px] rounded-full bg-brenn-yellow/10 blur-[120px]"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-16 w-full">
         {loading ? (
           <HeroSkeleton />
         ) : (
-          <div className="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
-            <div className="w-full lg:flex-1">
-              <motion.span
+          <div className="flex flex-col items-center gap-16 lg:flex-row lg:gap-24">
+            
+            {/* Left Content */}
+            <div className="w-full lg:flex-1 pt-10">
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="eyebrow flex items-center gap-2 text-xs sm:text-sm"
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 text-sm font-semibold tracking-widest text-brenn-yellow uppercase mb-6"
               >
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brenn-yellow" />
-                Precision Kitchen Tools
-              </motion.span>
+                <span className="h-[2px] w-8 bg-brenn-yellow" />
+                The Perfect Cut
+              </motion.div>
 
               <motion.h1
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-3 text-4xl font-extrabold leading-[1.12] tracking-tight sm:mt-4 sm:text-5xl sm:leading-[1.08] lg:text-6xl lg:leading-[1.05]"
+                className="text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4.5rem]"
               >
-                {hero?.heading || "Precision Brownie Divider"}
-                <span className="block text-brenn-yellow">{hero?.subheading || "Designed for Professionals."}</span>
+                {hero?.heading || "Precision Brownie"}
+                <br />
+                <span className="text-ink/80">{hero?.subheading || "Divider"}</span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-4 max-w-lg text-base leading-relaxed text-slate sm:mt-6 sm:text-lg"
+                className="mt-8 max-w-lg text-lg leading-relaxed text-slate"
               >
                 {hero?.description ||
                   "Cut perfect, uniform brownies every time with a tool engineered for bakeries and home kitchens that demand consistency."}
@@ -63,32 +68,67 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-6 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4"
+                className="mt-10 flex flex-col gap-4 sm:flex-row"
               >
-                <Button className="w-full text-center sm:w-auto" href={hero?.primaryCtaUrl || featured?.amazonUrl || "https://www.amazon.com"}>
+                <Button className="w-full text-center sm:w-auto shadow-lg shadow-brenn-yellow/20 hover:-translate-y-0.5 transition-transform" href={hero?.primaryCtaUrl || featured?.amazonUrl || "https://www.amazon.com"}>
                   {hero?.primaryCtaLabel || "Buy on Amazon"}
                 </Button>
-                <Button className="w-full text-center sm:w-auto" variant="secondary" href="/about">
+                <Button className="w-full text-center sm:w-auto border-none hover:bg-slate-50 transition-colors" variant="secondary" href="/about">
                   {hero?.secondaryCtaLabel || "Learn More"}
                 </Button>
               </motion.div>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="tick-corner relative w-full lg:flex-1"
-            >
-              <div className="overflow-hidden rounded-2xl shadow-premium ring-1 ring-black/5">
-                <img
-                  src={heroImage || "https://images.unsplash.com/photo-1615796701805-2094ac54bbf9?q=80&w=1600&auto=format&fit=crop"}
-                  alt={hero?.heading || featured?.title || "Brenn Global bakery tools"}
-                  className="h-[300px] w-full rounded-2xl object-cover sm:h-[380px] lg:h-[480px]"
-                  loading="eager"
-                />
-              </div>
-            </motion.div>
+            {/* Right Content - Automated Splinter Grid */}
+            <div className="relative w-full lg:flex-1 mt-8 lg:mt-0 flex justify-center perspective-1000">
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full max-w-[480px] aspect-square"
+              >
+                {/* 16-Piece Image Grid - Animated Automatically */}
+                <motion.div 
+                  animate={{ gap: ["0px", "0px", "8px", "8px", "0px"] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 grid grid-cols-4 grid-rows-4 p-2"
+                >
+                  {Array.from({ length: 16 }).map((_, i) => {
+                    const col = i % 4;
+                    const row = Math.floor(i / 4);
+                    const x = col * 33.3333; // 0, 33.3, 66.6, 100
+                    const y = row * 33.3333; // 0, 33.3, 66.6, 100
+                    return (
+                      <motion.div
+                        key={i}
+                        animate={{ borderRadius: ["0px", "0px", "6px", "6px", "0px"] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-full h-full shadow-sm"
+                        style={{
+                          backgroundImage: `url(${heroImage})`,
+                          backgroundPosition: `${x}% ${y}%`,
+                          backgroundSize: "400% 400%",
+                        }}
+                      />
+                    );
+                  })}
+                </motion.div>
+
+                {/* Subtle Instruction/Caption */}
+                <motion.div 
+                  animate={{ opacity: [0, 0, 1, 1, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -bottom-12 left-1/2 -translate-x-1/2"
+                >
+                  <p className="text-xs font-bold tracking-widest text-brenn-yellow uppercase whitespace-nowrap">
+                    16 Perfect Pieces
+                  </p>
+                </motion.div>
+                
+              </motion.div>
+            </div>
+            
           </div>
         )}
       </div>
@@ -96,9 +136,9 @@ const Hero = () => {
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        className="mt-20 flex justify-center text-slate/60"
+        className="mt-16 flex justify-center text-slate/40 pb-4"
       >
-        <HiArrowDown size={22} />
+        <HiArrowDown size={24} />
       </motion.div>
     </section>
   );

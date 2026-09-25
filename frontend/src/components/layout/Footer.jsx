@@ -15,7 +15,7 @@ const Footer = () => {
           <div className="flex items-center gap-2.5">
             <img src={brennLogo} alt="Brenn Global" className="h-9 w-auto rounded-md object-contain" />
             <span className="font-display text-xl font-extrabold tracking-tight">
-              BRENN <span className="text-brenn-yellow">GLOBAL</span>
+              BRENN
             </span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
@@ -59,9 +59,9 @@ const Footer = () => {
             Contact
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li>{footer?.phone || "+1 (555) 123-4567"}</li>
-            <li>{footer?.email || "hello@brennglobal.com"}</li>
-            <li>{footer?.address || "Industrial Ave, Suite 400, Los Angeles, CA"}</li>
+            <li>{footer?.phone || "+91 84899 99988"}</li>
+            <li>{footer?.email || "support@brennglobal.in"}</li>
+            <li>{footer?.address || "Udumalaipettai, Tamil Nadu, India"}</li>
           </ul>
         </div>
       </div>

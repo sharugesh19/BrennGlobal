@@ -24,16 +24,16 @@ const DEFAULTS = {
   },
   footer: {
     description: "Premium precision kitchen tools, engineered for professionals.",
-    phone: "+1 (555) 123-4567",
-    email: "hello@brennglobal.com",
-    address: "Industrial Ave, Suite 400, Los Angeles, CA",
+    phone: "+91 84899 99988",
+    email: "support@brennglobal.in",
+    address: "Udumalaipettai, Tamil Nadu, India",
     social: {
       instagram: "https://instagram.com",
       facebook: "https://facebook.com",
       youtube: "https://youtube.com",
       linkedin: "https://linkedin.com",
     },
-    whatsappNumber: "15551234567",
+    whatsappNumber: "918489999988",
   },
 };
 

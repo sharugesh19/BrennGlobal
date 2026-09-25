@@ -35,9 +35,9 @@ const Navbar = () => {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
         <Link to="/" className="flex items-center gap-2.5">
-          <img src={brennLogo} alt="Brenn Global" className="h-9 w-auto object-contain" />
+          <img src={brennLogo} alt="Brenn" className="h-9 w-auto object-contain" />
           <span className="font-display text-xl font-extrabold tracking-tight">
-            BRENN <span className="text-brenn-yellow">GLOBAL</span>
+            BRENN
           </span>
         </Link>
 
