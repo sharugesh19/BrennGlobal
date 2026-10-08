@@ -64,6 +64,12 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-white/10 px-6 py-6 text-center text-xs text-white/40 sm:px-10 lg:px-16">
+        <div className="mb-3 flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <Link to="/terms-and-conditions" className="hover:text-brenn-yellow">Terms &amp; Conditions</Link>
+          <Link to="/privacy-policy" className="hover:text-brenn-yellow">Privacy Policy</Link>
+          <Link to="/refund-policy" className="hover:text-brenn-yellow">Refund &amp; Cancellation</Link>
+          <Link to="/shipping-policy" className="hover:text-brenn-yellow">Shipping Policy</Link>
+        </div>
         © {year} Brenn Global. All rights reserved.
       </div>
     </footer>

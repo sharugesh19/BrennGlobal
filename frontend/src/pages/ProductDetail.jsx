@@ -5,9 +5,11 @@ import { getProductBySlug } from "../lib/api/products.js";
 import SEO from "../components/seo/SEO.jsx";
 import Button from "../components/ui/Button.jsx";
 import { ProductCardSkeleton } from "../components/ui/Skeleton.jsx";
+import { useCartStore } from "../store/useCartStore.js";
 
 const ProductDetail = () => {
   const { slug } = useParams();
+  const addItem = useCartStore((s) => s.addItem);
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -122,6 +124,11 @@ const ProductDetail = () => {
           )}
 
           <div className="mt-6 flex flex-wrap gap-4">
+            {product.price && (
+              <button onClick={() => addItem(product)} className="btn-primary">
+                Add to Cart
+              </button>
+            )}
             <Button href={product.amazonUrl || "https://www.amazon.com"}>Buy on Amazon</Button>
           </div>
 

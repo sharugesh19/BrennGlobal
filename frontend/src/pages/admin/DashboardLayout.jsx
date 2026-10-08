@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   HiOutlineViewGrid,
   HiOutlineCube,
+  HiOutlineShoppingBag,
   HiOutlineMail,
   HiOutlineLogout,
 } from "react-icons/hi";
@@ -10,6 +11,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 const NAV = [
   { label: "Dashboard", to: "/admin/dashboard", icon: <HiOutlineViewGrid /> },
   { label: "Products", to: "/admin/products", icon: <HiOutlineCube /> },
+  { label: "Orders", to: "/admin/orders", icon: <HiOutlineShoppingBag /> },
   { label: "Enquiries", to: "/admin/enquiries", icon: <HiOutlineMail /> },
 ];
 
