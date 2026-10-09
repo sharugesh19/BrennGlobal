@@ -1,138 +1,127 @@
 # Brenn Global — Supabase Edition
 
-This project has been migrated off Express + MongoDB + JWT + Cloudinary onto a
-**single Supabase backend**. It is now a static React (Vite) app that talks
-directly to Supabase — no server to deploy, patch, or scale.
+Brenn Global is an e-commerce website designed for premium kitchen tools. It allows customers to view products, add them to a cart, and securely check out using Razorpay. The admin dashboard allows the store owner to manage products, view orders, and edit website content.
 
-## What changed
+## Tech Stack
 
-| Before                          | After                                   |
-|----------------------------------|------------------------------------------|
-| Express API (`/backend`)         | **Removed entirely**                      |
-| MongoDB + Mongoose                | **Supabase Postgres** (`products`, `website_content`, `contact_messages`, `site_settings`) |
-| JWT auth (`jsonwebtoken`, `bcryptjs`) | **Supabase Auth** (email/password, single admin account) |
-| Cloudinary                        | **Supabase Storage** (see "Why Supabase Storage" below) |
-| `axios` calls to `/api/...`       | `@supabase/supabase-js` client calls directly from React |
+- **Frontend:** React (Vite) for building the user interface quickly and efficiently.
+- **Styling:** Tailwind CSS for rapid, responsive UI design without writing custom CSS.
+- **State Management:** Zustand for lightweight global state (e.g., shopping cart).
+- **Routing:** React Router (`react-router-dom`) for client-side navigation.
+- **Animations:** Framer Motion for smooth page transitions and interactive elements.
+- **Backend/Database:** Supabase (PostgreSQL) for storing products, website content, contact messages, and site settings.
+- **Authentication:** Supabase Auth for the secure admin login.
+- **Storage:** Supabase Storage for hosting product images and site media.
+- **Payments:** Razorpay for secure online payment processing.
+- **Hosting:** Vercel for fast, scalable frontend deployment.
 
-The `/backend` folder is gone. The whole app is now just `/frontend`, deployed
-as a static site.
-
-## Why Supabase Storage instead of Cloudinary
-
-You asked for whichever is simpler — that's Supabase Storage:
-
-- **One less service, one less set of API keys.** Cloudinary needs its own
-  account, cloud name, API key/secret, and (previously) an Express endpoint to
-  sign uploads. Supabase Storage uses the same project URL and anon key you
-  already have for the database and auth.
-- **Uploads happen straight from the browser.** The admin panel calls
-  `supabase.storage.from('media').upload(...)` directly — no server needed to
-  proxy the file or sign a request.
-- **Access control lives in the same place as your data.** Storage policies
-  are SQL, right next to your table RLS policies (see `supabase/schema.sql`).
-- Cloudinary's extra image transforms (auto-format, on-the-fly resizing) are
-  the one thing you lose. For a single-product brand site with a handful of
-  product photos, that trade-off is well worth the simpler architecture. If
-  you later need heavy image transformation, Supabase Storage can still sit
-  behind a CDN/transform layer, or you can swap out `lib/api/storage.js` —
-  it's the only file that talks to the storage layer.
-
-## Project structure
+## Folder Structure
 
 ```
-frontend/
-  src/
-    lib/
-      supabaseClient.js       # Supabase client singleton
-      api/
-        products.js           # Products CRUD + status toggle
-        websiteContent.js     # Hero / About / Mission / Vision / Footer content
-        contact.js            # Contact form submit + admin inbox
-        settings.js           # Site branding/theme/analytics (admin Settings page)
-        storage.js            # Image upload/list/delete (Supabase Storage)
-        dashboard.js          # Admin dashboard stats
-    context/AuthContext.jsx    # Supabase Auth session (replaces JWT context)
-    store/                     # Zustand stores, now backed by Supabase reads
-    pages/, components/        # UI is unchanged — only the data source changed
-supabase/
-  schema.sql                  # Full schema + RLS policies + storage bucket setup
+.
+├── frontend/                 # The main React application
+│   ├── src/
+│   │   ├── components/       # Reusable UI parts (Navbar, Footer, forms, etc.)
+│   │   ├── context/          # React context providers (e.g., AuthContext)
+│   │   ├── hooks/            # Custom React hooks for data fetching
+│   │   ├── lib/              # API clients and Supabase configuration
+│   │   ├── pages/            # Page components (Home, Checkout, Admin pages)
+│   │   ├── routes/           # Routing configuration (AppRoutes, ProtectedRoute)
+│   │   └── store/            # Zustand global state stores (useCartStore)
+│   ├── index.html            # Entry HTML file
+│   ├── vercel.json           # Vercel deployment config for React Router (SPA rewrites)
+│   └── vite.config.js        # Vite bundler configuration
+└── supabase/
+    ├── schema.sql            # The database schema, initial data, and RLS policies
+    └── functions/            # Supabase edge functions (Deno)
+        ├── create-order/index.ts
+        ├── verify-payment/index.ts
+        └── razorpay-webhook/index.ts
 ```
 
-## Setup
+## Purchase Flow
 
-### 1. Create a Supabase project
+1. **Browse:** The customer views products on the website (`/products`).
+2. **Add to Cart:** The customer adds an item to their cart, which is saved in the browser using Zustand (`useCartStore`).
+3. **Checkout:** The customer proceeds to `/checkout` and enters their delivery details.
+4. **Create Order (Edge Function):** When the user clicks "Pay Now", the frontend calls the `create-order` edge function. This function checks the database for correct pricing, creates an order in Razorpay, and returns the `razorpayOrderId`.
+5. **Payment Window:** Razorpay's checkout modal opens for the user to complete payment.
+6. **Verify Payment (Edge Function):** After successful payment, the frontend receives a payment response and calls the `verify-payment` edge function to confirm the Razorpay signature is authentic.
+7. **Webhook (Edge Function):** Razorpay also sends a webhook (`razorpay-webhook`) to our server confirming the payment capture in the background, updating the order status to "paid".
+8. **Confirmation:** The frontend shows a success message and clears the shopping cart.
 
-Create a project at [supabase.com](https://supabase.com) and grab, from
-**Project Settings → API**:
-- Project URL
-- `anon` public API key
+## Database Tables
 
-### 2. Run the schema
+- `products`: Stores all items for sale (title, price, features, images, status).
+- `website_content`: A single row containing editable content for the website (hero text, story, footer).
+- `contact_messages`: Stores messages submitted by customers via the Contact page.
+- `site_settings`: A single row for admin-editable settings like theme colors and site name.
+- `orders`: Stores customer purchases (customer details, address, items, total, payment status, order status, and Razorpay IDs).
 
-Open **SQL Editor** in the Supabase Dashboard, paste the contents of
-`supabase/schema.sql`, and run it. This creates:
-- `products`, `website_content`, `contact_messages`, `site_settings` tables
-- Row Level Security policies for all of them
-- The public `media` Storage bucket + its access policies
+## Edge Functions
 
-It's safe to re-run — every statement guards against re-creation.
+1. **`create-order`**: Receives cart items, calculates the correct total by taking prices directly from the `products` table on the server, creates a pending order in the database, and requests an Order ID from Razorpay.
+2. **`verify-payment`**: Receives the success response from the frontend after the user pays, checks the Razorpay signature to confirm authenticity, and updates the order status to paid.
+3. **`razorpay-webhook`**: Listens for Razorpay's server-to-server events (like `payment.captured`), checks the Razorpay signature, and updates the order status securely in the background, even if the user closed their browser.
 
-### 3. Create the admin account
+## Environment Variables and Secrets
 
-Supabase Auth users must be created through the Auth API (so passwords are
-hashed correctly), not raw SQL. In the Dashboard:
+- **Frontend (Vercel):**
+  - `VITE_SUPABASE_URL`: The URL of your Supabase project.
+  - `VITE_SUPABASE_ANON_KEY`: The public anonymous key for Supabase.
+- **Backend (Supabase Edge Function Secrets):**
+  - `RAZORPAY_KEY_ID`: Your Razorpay API Key ID.
+  - `RAZORPAY_KEY_SECRET`: Your Razorpay API Key Secret.
+  - `RAZORPAY_WEBHOOK_SECRET`: The secret phrase used to verify webhooks from Razorpay.
 
-**Authentication → Users → Add User → Create new user**
-- Email: your admin email
-- Password: a strong password
-- Toggle **Auto Confirm User** on
+*(Never commit actual values or `.env` files to Git).*
 
-That's it — there's no separate "admin" role table. Every RLS write policy
-in this project simply checks `to authenticated`, so the one account you
-create here is automatically the site admin the moment they log in at
-`/admin/login`. If you ever need a second editor, just add another user the
-same way.
+## Security Notes
 
-### 4. Configure the frontend
+- **Authentication:** New user sign-ups are turned off in Supabase Auth. 
+- **Authorization:** Only admin accounts created manually can read the `orders` table.
 
-```bash
-cd frontend
-cp .env.example .env
-# then edit .env:
-#   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-#   VITE_SUPABASE_ANON_KEY=your_anon_key
+## How to Run Locally (Windows)
 
-npm install
-npm run dev
-```
+1. Open Command Prompt and clone the repository.
+2. Navigate to the frontend directory: `cd frontend`
+3. Install dependencies: `npm install`
+4. Copy the environment file: `copy .env.example .env` (and fill in your Supabase URL and Anon Key).
+5. Start the development server: `npm run dev`
+6. The app will be running at `http://localhost:5173`.
 
-Log in at `/admin/login` with the account you created in step 3, then use
-**Website** to fill in the hero/about/contact copy and **Products** to add
-your first product (the Brownie Divider, or whatever's live today).
+## How to Deploy
 
-## Deployment (Vercel)
+1. **Database:** Go to the Supabase Dashboard -> SQL Editor, and paste the contents of `supabase/schema.sql` to set up tables and security policies.
+2. **Edge Functions:** Deploy the Supabase Edge Functions using the Supabase CLI: `supabase functions deploy`. The `razorpay-webhook` function must have "Verify JWT" turned OFF (deploy it with `supabase functions deploy razorpay-webhook --no-verify-jwt`), because Razorpay does not send a Supabase login token.
+3. **Frontend:** Connect your GitHub repository to Vercel. Set the Root Directory to `frontend`. Vercel will automatically detect Vite and configure the build settings. Add the `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` variables in Vercel's Environment Variables settings before deploying.
+4. **Auth Settings:** In the Supabase Dashboard, ensure the **Site URL** and **Redirect URLs** under Authentication include your live Vercel address.
 
-This is now a plain static Vite build — deploy the `frontend` folder to
-Vercel as-is:
+## Switching Razorpay from Test to Live
 
-1. Import the repo in Vercel, set the **root directory** to `frontend`.
-2. Framework preset: **Vite** (build command `npm run build`, output `dist`).
-3. Add the two environment variables from step 4 above in
-   **Project Settings → Environment Variables**.
-4. Deploy.
+1. Log into your Razorpay Dashboard and switch to **Live Mode**.
+2. Generate new Live API Keys (`RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET`).
+3. Update these secrets in your Supabase project using the Supabase CLI or dashboard.
+4. Go to Webhooks in the Razorpay Dashboard and create a new webhook for Live Mode pointing to your `razorpay-webhook` edge function URL.
+5. Create a new Webhook Secret, and update the `RAZORPAY_WEBHOOK_SECRET` in Supabase to match the new one.
 
-`frontend/vercel.json` includes the SPA rewrite rule so client-side routes
-like `/admin/products` and `/products/:slug` don't 404 on refresh.
+## Using the Admin Panel
 
-No backend service, no separate database host, no Cloudinary account — just
-Vercel + Supabase.
+1. Go to `/admin/login` and log in with your Supabase Auth credentials.
+2. **Products:** Add, edit, or hide products. Upload images which are stored securely in Supabase Storage.
+3. **Orders:** View incoming orders, check payment status (Paid vs Pending), and update shipping statuses.
+4. **Website:** Edit the hero section, company story, and footer contact info without touching code.
 
-## Notes on data shape
+## Policy Pages
 
-- Product `images` are stored as JSONB: `{ url, path, alt, isPrimary }[]`.
-  `path` is the Supabase Storage object path (used to delete the file);
-  `url` is its public URL.
-- `website_content` and `site_settings` are singleton rows (`key = 'main'`)
-  holding nested JSONB (`hero`, `story`, `footer` / `theme`, `analytics`) so
-  the admin UI's existing nested-object code kept working unchanged.
-- IDs are UUIDs (`gen_random_uuid()`), replacing Mongo's ObjectIds.
+The policy pages are located at `/terms-and-conditions`, `/privacy-policy`, `/refund-policy`, and `/shipping-policy`.
+The values for these pages are managed in `frontend/src/pages/Policy.jsx`. You can easily edit the following constants at the top of the file:
+- `SHIPPING_DAYS`
+- `RETURN_DAYS`
+- `BUSINESS` (Name, email, phone, location)
+- `UPDATED` (Date of last policy update)
+
+## Known Limitations and Future Ideas
+
+- **Image Optimization:** Images are served directly from Supabase Storage without on-the-fly resizing/compression (unlike Cloudinary).
+- **Missing Loading States:** The checkout page could use more skeleton loaders while fetching order data.

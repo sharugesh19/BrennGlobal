@@ -316,3 +316,33 @@ create policy "Admin can delete media"
 -- that one user is automatically treated as the site admin the moment they
 -- log in from /admin/login — no extra role table needed for a single-admin site.
 -- ============================================================================
+-- ORDERS (customer purchases paid through Razorpay)
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  customer_name text not null,
+  customer_phone text not null,
+  customer_email text not null,
+  address text not null,
+  city text not null,
+  state text not null,
+  pincode text not null,
+  items jsonb not null,
+  total numeric not null,
+  currency text not null default 'INR',
+  payment_status text not null default 'pending', -- pending / paid
+  order_status text not null default 'new',       -- new / processing / shipped / delivered / cancelled
+  razorpay_order_id text,
+  razorpay_payment_id text
+);
+
+alter table public.orders enable row level security;
+
+create policy "Admin can read orders" on public.orders
+  for select to authenticated using (true);
+
+create policy "Admin can update orders" on public.orders
+  for update to authenticated using (true) with check (true);
+
+-- No insert policy on purpose: only the create-order edge function
+-- (using the service role key) creates orders.
