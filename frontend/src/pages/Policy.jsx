@@ -118,9 +118,8 @@ const POLICIES = {
       {
         heading: "Cancellations",
         body: [
-          "You can cancel an order before it is shipped by contacting us. " +
-            contactLine +
-            " Once an order has been shipped, it can no longer be cancelled.",
+            "Orders cannot be cancelled once payment is completed. If you have a problem with your order, please contact us. " +
+            contactLine,
         ],
       },
       {
