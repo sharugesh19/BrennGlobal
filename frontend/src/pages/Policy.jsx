@@ -1,8 +1,8 @@
 import SEO from "../components/seo/SEO.jsx";
 
 // ---- Change these values after confirming with the client ----
-const SHIPPING_DAYS = "5 to 7 business days";
-const RETURN_DAYS = "7 days";
+const SHIPPING_DAYS = "2 to 3 business days within Tamil Nadu and 3 to 7 business days for other parts of India";
+const RETURN_DAYS = "three working days";
 const BUSINESS = {
   name: "Brenn Global",
   email: "support@brennglobal.in",
@@ -126,19 +126,19 @@ const POLICIES = {
       {
         heading: "Returns",
         body: [
-          `If you receive a damaged, defective or wrong item, please contact us within ${RETURN_DAYS} of delivery with your order reference and photos of the product. We will arrange a replacement or refund after checking the issue.`,
+                    `If you receive a damaged or wrong item, please report it within ${RETURN_DAYS} of purchase and contact us with your order reference. An unpacking video, recorded while opening the parcel, is mandatory for every claim. If the issue is confirmed, we will replace the item with a new one. We do not offer returns or refunds for any other reason.`,
         ],
       },
       {
         heading: "Refunds",
         body: [
-          "Approved refunds are sent to your original payment method. They usually reach your account within 5 to 7 business days after approval, depending on your bank.",
+                    "We do not offer refunds for returns. If we cancel your order (for example, because of a pricing or stock error) or a payment is taken but the order cannot be fulfilled, the full amount is refunded to your original payment method. This usually reaches your account within 5 to 7 business days, depending on your bank.",
         ],
       },
       {
         heading: "Items that are not returnable",
         body: [
-          "Products that have been used, damaged after delivery, or returned without original packaging cannot be accepted for return.",
+                    "We do not accept returns or refunds for a change of mind, or for products that have been used or damaged after delivery. Claims reported after three working days, or without an unpacking video, cannot be accepted.",
         ],
       },
       {
@@ -163,8 +163,8 @@ const POLICIES = {
         ],
       },
       {
-        heading: "Shipping charges",
-        body: ["Any shipping charges are shown at checkout before you pay."],
+        heading: "Shipping charges",  
+        body: ["Delivery charges, if any, depend on the delivery location and are confirmed before your order is shipped."],
       },
       {
         heading: "Tracking",
