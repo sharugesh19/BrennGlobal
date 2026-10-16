@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SITE_NAME = "Brenn Global";
 const DEFAULT_DESCRIPTION =
   "Brenn Global designs precision-engineered kitchen tools for professionals and home bakers.";
-const SITE_URL = "https://www.brennglobal.com";
+const SITE_URL = "https://brennglobal.in";
 
 const SEO = ({ title, description = DEFAULT_DESCRIPTION, path = "/", image, schema }) => {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Precision Kitchen Tools`;
