@@ -56,9 +56,15 @@ Deno.serve(async (req) => {
         return json({ error: "Only INR products can be paid online" }, 400);
       }
 
+            const allowedColors = ["Pink", "Yellow", "Cream"];
+      const color = String(item.color || "");
+      if (!allowedColors.includes(color)) {
+        return json({ error: "Please choose a valid colour" }, 400);
+      }
+
       const price = Number(product.price);
       total += price * quantity;
-      orderItems.push({ slug: product.slug, title: product.title, price, quantity });
+      orderItems.push({ slug: product.slug, title: product.title, price, quantity, color });
     }
 
     // Save the order as "pending" first.

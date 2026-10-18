@@ -61,7 +61,16 @@ const FeaturedProduct = () => {
                     activeImage === i ? "border-brenn-yellow" : "border-transparent opacity-70 hover:opacity-100"
                   }`}
                 >
-                  <img src={img.url} alt={img.alt} className="h-full w-full object-cover" />
+                  <img
+  src={img.url}
+  alt={img.alt}
+  className="h-full w-full object-cover"
+  onError={(e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%25' height='100%25' fill='%23eeeeee'/></svg>";
+  }}
+/>
                 </button>
               ))}
             </div>

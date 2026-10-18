@@ -125,7 +125,7 @@ const POLICIES = {
       {
         heading: "Returns",
         body: [
-                    `If you receive a damaged or wrong item, please report it within ${RETURN_DAYS} of purchase and contact us with your order reference. An unpacking video, recorded while opening the parcel, is mandatory for every claim. If the issue is confirmed, we will replace the item with a new one. We do not offer returns or refunds for any other reason.`,
+                    `If you receive a damaged or wrong item, please report it within ${RETURN_DAYS} of delivery and contact us with your order reference. An unpacking video, recorded while opening the parcel, is mandatory for every claim. If the issue is confirmed, we will replace the item with a new one. We do not offer returns or refunds for any other reason.`,
         ],
       },
       {
@@ -137,7 +137,7 @@ const POLICIES = {
       {
         heading: "Items that are not returnable",
         body: [
-                    "We do not accept returns or refunds for a change of mind, or for products that have been used or damaged after delivery. Claims reported after three working days, or without an unpacking video, cannot be accepted.",
+                    "We do not accept returns or refunds for a change of mind, or for products that have been used or damaged after delivery. Claims reported more than three working days after delivery, or without an unpacking video, cannot be accepted.",
         ],
       },
       {

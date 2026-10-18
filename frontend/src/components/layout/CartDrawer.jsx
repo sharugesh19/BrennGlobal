@@ -36,50 +36,61 @@ const CartDrawer = () => {
             <p className="mt-10 text-center text-slate">Your cart is empty.</p>
           ) : (
             <ul className="divide-y divide-ink/10">
-              {items.map((item) => (
-                <li key={item.id} className="flex gap-4 py-4">
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-20 w-20 rounded-lg object-cover"
-                    />
-                  )}
-                  <div className="flex flex-1 flex-col">
-                    <Link
-                      to={`/products/${item.slug}`}
-                      onClick={closeCart}
-                      className="font-medium leading-snug"
-                    >
-                      {item.title}
-                    </Link>
-                    <p className="mt-1 text-sm text-slate">
-                      {symbol(item.currency)}
-                      {item.price}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between pt-2">
-                      <div className="flex items-center gap-3 rounded-full border border-ink/15 px-3 py-1">
-                        <button aria-label="Decrease quantity" onClick={() => decrease(item.id)}>
-                          <HiMinus />
-                        </button>
-                        <span className="min-w-[1.5rem] text-center text-sm font-medium">
-                          {item.quantity}
-                        </span>
-                        <button aria-label="Increase quantity" onClick={() => increase(item.id)}>
-                          <HiPlus />
+              {items.map((item) => {
+                const lineId = item.lineId ?? item.id;
+                return (
+                  <li key={lineId} className="flex gap-4 py-4">
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="h-20 w-20 rounded-lg object-cover"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src =
+                            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%25' height='100%25' fill='%23eeeeee'/></svg>";
+                        }}
+                      />
+                    )}
+                    <div className="flex flex-1 flex-col">
+                      <Link
+                        to={`/products/${item.slug}`}
+                        onClick={closeCart}
+                        className="font-medium leading-snug"
+                      >
+                        {item.title}
+                      </Link>
+                      {item.color && (
+                        <p className="mt-1 text-sm text-slate">Colour: {item.color}</p>
+                      )}
+                      <p className="mt-1 text-sm text-slate">
+                        {symbol(item.currency)}
+                        {item.price}
+                      </p>
+                      <div className="mt-auto flex items-center justify-between pt-2">
+                        <div className="flex items-center gap-3 rounded-full border border-ink/15 px-3 py-1">
+                          <button aria-label="Decrease quantity" onClick={() => decrease(lineId)}>
+                            <HiMinus />
+                          </button>
+                          <span className="min-w-[1.5rem] text-center text-sm font-medium">
+                            {item.quantity}
+                          </span>
+                          <button aria-label="Increase quantity" onClick={() => increase(lineId)}>
+                            <HiPlus />
+                          </button>
+                        </div>
+                        <button
+                          aria-label="Remove item"
+                          onClick={() => removeItem(lineId)}
+                          className="text-slate hover:text-red-500"
+                        >
+                          <HiTrash />
                         </button>
                       </div>
-                      <button
-                        aria-label="Remove item"
-                        onClick={() => removeItem(item.id)}
-                        className="text-slate hover:text-red-500"
-                      >
-                        <HiTrash />
-                      </button>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

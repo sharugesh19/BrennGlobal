@@ -44,10 +44,15 @@ const Products = () => {
               >
                 <div className="flex h-64 w-full items-center justify-center overflow-hidden bg-cloud">
                   {p.images?.[0]?.url ? (
-                    <img
+                                        <img
                       src={p.images[0].url}
                       alt={p.images[0].alt || p.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src =
+                          "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%25' height='100%25' fill='%23eeeeee'/></svg>";
+                      }}
                     />
                   ) : (
                     <span className="font-mono text-4xl text-ink/10">?</span>

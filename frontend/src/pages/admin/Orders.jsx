@@ -112,7 +112,13 @@ const Orders = () => {
                 {(o.items || []).map((item, i) => (
                   <li key={i} className="flex justify-between py-2">
                     <span>
-                      {item.title} <span className="text-slate">× {item.quantity}</span>
+                      {item.title}
+                      {item.color && (
+                        <span className="ml-2 rounded-full bg-brenn-yellow/20 px-2 py-0.5 text-xs font-semibold">
+                          {item.color}
+                        </span>
+                      )}{" "}
+                      <span className="text-slate">× {item.quantity}</span>
                     </span>
                     <span>
                       {symbol(o.currency)}

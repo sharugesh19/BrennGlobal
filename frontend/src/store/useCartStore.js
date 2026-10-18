@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const lineOf = (i) => i.lineId ?? i.id;
+
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -12,13 +14,15 @@ export const useCartStore = create(
 
       addItem: (product, quantity = 1) => {
         const id = product.id ?? product.slug;
+        const color = product.color || "";
+        const lineId = color ? `${id}__${color}` : id;
         const items = get().items;
-        const existing = items.find((i) => i.id === id);
+        const existing = items.find((i) => lineOf(i) === lineId);
 
         if (existing) {
           set({
             items: items.map((i) =>
-              i.id === id ? { ...i, quantity: i.quantity + quantity } : i
+              lineOf(i) === lineId ? { ...i, quantity: i.quantity + quantity } : i
             ),
             isOpen: true,
           });
@@ -28,6 +32,8 @@ export const useCartStore = create(
               ...items,
               {
                 id,
+                lineId,
+                color,
                 slug: product.slug,
                 title: product.title,
                 price: Number(product.price) || 0,
@@ -41,21 +47,22 @@ export const useCartStore = create(
         }
       },
 
-      increase: (id) =>
+      increase: (lineId) =>
         set({
           items: get().items.map((i) =>
-            i.id === id ? { ...i, quantity: i.quantity + 1 } : i
+            lineOf(i) === lineId ? { ...i, quantity: i.quantity + 1 } : i
           ),
         }),
 
-      decrease: (id) =>
+      decrease: (lineId) =>
         set({
           items: get()
-            .items.map((i) => (i.id === id ? { ...i, quantity: i.quantity - 1 } : i))
+            .items.map((i) => (lineOf(i) === lineId ? { ...i, quantity: i.quantity - 1 } : i))
             .filter((i) => i.quantity > 0),
         }),
 
-      removeItem: (id) => set({ items: get().items.filter((i) => i.id !== id) }),
+      removeItem: (lineId) =>
+        set({ items: get().items.filter((i) => lineOf(i) !== lineId) }),
 
       clearCart: () => set({ items: [] }),
 

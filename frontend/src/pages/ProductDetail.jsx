@@ -12,6 +12,8 @@ const ProductDetail = () => {
   const addItem = useCartStore((s) => s.addItem);
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [color, setColor] = useState("");
+  const colors = ["Pink", "Yellow", "Cream"];
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -103,7 +105,16 @@ const ProductDetail = () => {
                     activeImage === i ? "border-brenn-yellow" : "border-transparent opacity-70 hover:opacity-100"
                   }`}
                 >
-                  <img src={img.url} alt={img.alt} className="h-full w-full object-cover" />
+                  <img
+                      src={img.url}
+                      alt={img.alt}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src =
+                           "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%25' height='100%25' fill='%23eeeeee'/></svg>";
+                      }}
+                   />
                 </button>
               ))}
             </div>
@@ -123,9 +134,32 @@ const ProductDetail = () => {
             </p>
           )}
 
+                    <div className="mt-6">
+            <p className="mb-2 font-mono text-xs uppercase tracking-widest text-slate">Colour</p>
+            <div className="flex flex-wrap gap-3">
+              {colors.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setColor(c)}
+                  className={`rounded-full border-2 px-5 py-2 text-sm font-medium transition-colors ${
+                    color === c ? "border-brenn-yellow bg-brenn-yellow/20" : "border-ink/15 hover:border-ink/40"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+            {!color && <p className="mt-2 text-xs text-slate">Please choose a colour.</p>}
+          </div>
+
           <div className="mt-6 flex flex-wrap gap-4">
             {product.price && (
-              <button onClick={() => addItem(product)} className="btn-primary">
+              <button
+                disabled={!color}
+                onClick={() => addItem({ ...product, color })}
+                className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 Add to Cart
               </button>
             )}

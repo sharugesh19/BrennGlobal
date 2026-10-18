@@ -82,6 +82,13 @@ const Checkout = () => {
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
+    if (items.some((i) => !i.color)) {
+      setMessage(
+        "One item in your cart has no colour. Please remove it from the cart and add it again after choosing a colour."
+      );
+      return;
+    }
+
     setPaying(true);
 
     const loaded = await loadRazorpay();
@@ -103,7 +110,7 @@ const Checkout = () => {
           state: form.state.trim(),
           pincode: form.pincode.trim(),
         },
-        items: items.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity })),
+          items: items.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity, color: i.color || "" })),
       },
     });
 
@@ -252,9 +259,11 @@ const Checkout = () => {
           <h2 className="text-lg font-bold">Order summary</h2>
           <ul className="mt-4 divide-y divide-ink/10">
             {items.map((item) => (
-              <li key={item.id} className="flex justify-between gap-4 py-3 text-sm">
+              <li key={item.lineId ?? item.id} className="flex justify-between gap-4 py-3 text-sm">
                 <span>
-                  {item.title} <span className="text-slate">× {item.quantity}</span>
+                  {item.title}
+                  {item.color && <span className="text-slate"> ({item.color})</span>}{" "}
+                  <span className="text-slate">× {item.quantity}</span>
                 </span>
                 <span className="font-medium">
                   {symbol(item.currency)}
