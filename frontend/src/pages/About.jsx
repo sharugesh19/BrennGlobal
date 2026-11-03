@@ -9,7 +9,7 @@ const About = () => {
 
   return (
     <div className="pt-24 pb-24 sm:pt-32 sm:pb-32 overflow-hidden bg-white">
-      <SEO title="About Us | Brenn" path="/about" description="Learn about Brenn's mission to bring precision-engineered kitchen tools to professionals and home bakers worldwide." />
+      <SEO title="About Us" path="/about" description="Learn about Brenn Global and our precision-engineered kitchen tools for professionals and home bakers." />
 
       <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         

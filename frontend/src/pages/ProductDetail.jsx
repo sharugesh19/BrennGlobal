@@ -73,7 +73,7 @@ const ProductDetail = () => {
       "@type": "Offer",
       price: product.price,
       priceCurrency: product.currency || "INR",
-      url: product.amazonUrl,
+      url: `https://brennglobal.in/products/${product.slug}`,
       availability: colors.every((c) => isSoldOut(c))
         ? "https://schema.org/OutOfStock"
         : "https://schema.org/InStock",
