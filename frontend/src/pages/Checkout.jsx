@@ -114,8 +114,17 @@ const Checkout = () => {
       },
     });
 
-    if (error || !data?.razorpayOrderId) {
-      setMessage(data?.error || "Could not start the payment. Please try again.");
+        if (error || !data?.razorpayOrderId) {
+      let serverMessage = data?.error;
+      if (!serverMessage && error?.context && typeof error.context.json === "function") {
+        try {
+          const body = await error.context.json();
+          serverMessage = body?.error;
+        } catch {
+          /* ignore */
+        }
+      }
+      setMessage(serverMessage || "Could not start the payment. Please try again.");
       setPaying(false);
       return;
     }
@@ -273,7 +282,9 @@ const Checkout = () => {
             ))}
           </ul>
           <div className="mt-4 flex justify-between border-t border-ink/10 pt-4 text-lg font-bold">
-            <span>Total</span>
+            <span>
+              Total <span className="text-xs font-normal text-slate">(incl. of all taxes)</span>
+            </span>
             <span>
               {symbol(currency)}
               {total}

@@ -25,7 +25,7 @@ const Footer = () => {
               { icon: <FaFacebookF />, href: footer?.social?.facebook },
               { icon: <FaYoutube />, href: footer?.social?.youtube },
               { icon: <FaLinkedinIn />, href: footer?.social?.linkedin },
-            ].map((s, i) => (
+            ].filter((s) => s.href).map((s, i) => (
               <a
                 key={i}
                 href={s.href || "#"}
@@ -59,6 +59,12 @@ const Footer = () => {
             <li>+91 84899 99988</li>
             <li>support@brennglobal.in</li>
             <li>Udumalaipettai, Tamil Nadu, India</li>
+            <li className="pt-2 text-white/50">
+              Brenn Global is a proprietorship of Koilraj Biju Daniel.
+            </li>
+            <li className="text-white/50">
+              For complaints, contact Koilraj Biju Daniel (Proprietor) at support@brennglobal.in or +91 84899 99988.
+            </li>
           </ul>
         </div>
       </div>

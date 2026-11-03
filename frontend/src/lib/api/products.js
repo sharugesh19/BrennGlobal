@@ -30,6 +30,7 @@ const rowToProduct = (row) => ({
   currency: row.currency || "INR",
   status: row.status || "draft",
   isFeatured: row.is_featured || false,
+  colourStock: row.colour_stock || {},
   sortOrder: row.sort_order || 0,
   seo: row.seo || { metaTitle: "", metaDescription: "", keywords: [] },
   createdAt: row.created_at,
@@ -53,6 +54,7 @@ const productToRow = (product) => {
   if (product.currency !== undefined) row.currency = product.currency;
   if (product.status !== undefined) row.status = product.status;
   if (product.isFeatured !== undefined) row.is_featured = product.isFeatured;
+  if (product.colourStock !== undefined) row.colour_stock = product.colourStock;
   if (product.sortOrder !== undefined) row.sort_order = product.sortOrder;
   if (product.seo !== undefined) row.seo = product.seo;
   return row;

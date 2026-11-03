@@ -97,8 +97,11 @@ const CartDrawer = () => {
 
         {items.length > 0 && (
           <div className="border-t border-ink/10 px-6 py-5">
-            <div className="flex items-center justify-between text-lg font-bold">
-              <span>Total</span>
+                        <div className="flex items-center justify-between text-lg font-bold">
+              <span>
+                Total <span className="text-xs font-normal text-slate">(incl. of all taxes)</span>
+              </span>
+              
               <span>
                 {symbol(currency)}
                 {total}

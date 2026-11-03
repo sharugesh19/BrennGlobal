@@ -35,18 +35,20 @@ Deno.serve(async (req) => {
       const razorpayOrderId = payment?.order_id ?? event.payload?.order?.entity?.id;
 
       if (razorpayOrderId) {
-        const supabase = createClient(
+                const supabase = createClient(
           Deno.env.get("SUPABASE_URL")!,
           Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
         );
 
-        await supabase
-          .from("orders")
-          .update({
-            payment_status: "paid",
-            ...(payment?.id ? { razorpay_payment_id: payment.id } : {}),
-          })
-          .eq("razorpay_order_id", razorpayOrderId);
+        const { error: confirmError } = await supabase.rpc("confirm_order_paid", {
+          p_razorpay_order_id: razorpayOrderId,
+          p_payment_id: payment?.id ?? null,
+        });
+
+        if (confirmError) {
+          console.error(confirmError);
+          return new Response("Error", { status: 500 });
+        }
       }
     }
   } catch (err) {

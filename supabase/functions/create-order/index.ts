@@ -34,13 +34,14 @@ Deno.serve(async (req) => {
     const slugs = items.map((i: { slug: string }) => i.slug);
     const { data: products, error: productsError } = await supabase
       .from("products")
-      .select("slug, title, price, currency, status")
+      .select("slug, title, price, currency, status, colour_stock")
       .in("slug", slugs);
 
     if (productsError) return json({ error: "Could not load products" }, 500);
 
     let total = 0;
     const orderItems = [];
+    const requested: Record<string, number> = {};
 
     for (const item of items) {
       const product = products?.find((p) => p.slug === item.slug);
@@ -56,10 +57,28 @@ Deno.serve(async (req) => {
         return json({ error: "Only INR products can be paid online" }, 400);
       }
 
-            const allowedColors = ["Pink", "Yellow", "Cream"];
+      const allowedColors = ["Pink", "Yellow", "Cream"];
       const color = String(item.color || "");
       if (!allowedColors.includes(color)) {
         return json({ error: "Please choose a valid colour" }, 400);
+      }
+
+      // Stock check. A colour with no number is "not tracked" and never runs out.
+      const available = product.colour_stock?.[color];
+      if (available !== undefined && available !== null) {
+        const key = `${product.slug}__${color}`;
+        requested[key] = (requested[key] || 0) + quantity;
+        if (requested[key] > Number(available)) {
+          return json(
+            {
+              error:
+                Number(available) <= 0
+                  ? `${product.title} in ${color} is sold out`
+                  : `Only ${available} left in ${color}`,
+            },
+            400
+          );
+        }
       }
 
       const price = Number(product.price);

@@ -94,6 +94,7 @@ const Hero = () => {
                     </span>
                     <span className="text-6xl font-black tracking-tight text-ink sm:text-7xl">₹999</span>
                   </div>
+                  <p className="mt-2 text-xs font-medium text-slate">Inclusive of all taxes</p>
                   <motion.span
                     animate={{ rotate: [-4, 4, -4] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}

@@ -15,6 +15,7 @@ const emptyProduct = {
   currency: "INR",
   status: "draft",
   isFeatured: false,
+  colourStock: {},
   features: [""],
   applications: [""],
   specifications: [{ label: "", value: "" }],
@@ -94,6 +95,11 @@ const ProductForm = () => {
       features: product.features.filter(Boolean),
       applications: product.applications.filter(Boolean),
       specifications: product.specifications.filter((s) => s.label && s.value),
+      colourStock: Object.fromEntries(
+        ["Pink", "Yellow", "Cream"]
+          .filter((c) => product.colourStock?.[c] !== undefined && product.colourStock?.[c] !== "")
+          .map((c) => [c, Math.max(0, Math.floor(Number(product.colourStock[c]) || 0))])
+      ),
     };
 
     try {
@@ -221,6 +227,27 @@ const ProductForm = () => {
           <button type="button" onClick={() => addListItem("specifications", { label: "", value: "" })} className="mt-1 flex items-center gap-1 text-sm text-brenn-yellow-dark"><HiOutlinePlus /> Add specification</button>
         </div>
 
+        <div className="rounded-xl2 border border-ink/8 bg-white p-6">
+          <h2 className="mb-1 font-semibold">Stock by colour</h2>
+          <p className="mb-4 text-xs text-slate">
+            Type how many are available. Leave a box empty if you do not want to track that colour. Type 0 to mark it sold out.
+          </p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {["Pink", "Yellow", "Cream"].map((c) => (
+              <div key={c}>
+                <label className={labelClass}>{c}</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  className={inputClass}
+                  value={product.colourStock?.[c] ?? ""}
+                  onChange={(e) => updateField("colourStock", { ...product.colourStock, [c]: e.target.value })}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="flex gap-3">
           <button type="submit" disabled={saving} className="btn-primary">{saving ? "Saving…" : "Save Product"}</button>

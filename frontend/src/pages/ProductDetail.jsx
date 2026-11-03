@@ -57,6 +57,11 @@ const ProductDetail = () => {
   }
 
   const images = product.images || [];
+  const stockOf = (c) => {
+    const n = product.colourStock?.[c];
+    return n === undefined || n === null ? null : Number(n);
+  };
+  const isSoldOut = (c) => stockOf(c) !== null && stockOf(c) <= 0;
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -67,9 +72,11 @@ const ProductDetail = () => {
     offers: {
       "@type": "Offer",
       price: product.price,
-      priceCurrency: product.currency || "USD",
+      priceCurrency: product.currency || "INR",
       url: product.amazonUrl,
-      availability: "https://schema.org/InStock",
+      availability: colors.every((c) => isSoldOut(c))
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
     },
   };
 
@@ -131,26 +138,32 @@ const ProductDetail = () => {
             <p className="mt-6 font-display text-2xl font-bold">
               {product.currency === "INR" ? "₹" : product.currency === "USD" ? "$" : product.currency + " "}
               {product.price}
+              <span className="ml-2 text-sm font-normal text-slate">(incl. of all taxes)</span>
             </p>
           )}
 
                     <div className="mt-6">
             <p className="mb-2 font-mono text-xs uppercase tracking-widest text-slate">Colour</p>
             <div className="flex flex-wrap gap-3">
-              {colors.map((c) => (
+                            {colors.map((c) => (
                 <button
                   key={c}
                   type="button"
+                  disabled={isSoldOut(c)}
                   onClick={() => setColor(c)}
-                  className={`rounded-full border-2 px-5 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-full border-2 px-5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
                     color === c ? "border-brenn-yellow bg-brenn-yellow/20" : "border-ink/15 hover:border-ink/40"
                   }`}
                 >
                   {c}
+                  {isSoldOut(c) && <span className="ml-2 text-xs font-normal">Sold out</span>}
                 </button>
               ))}
             </div>
             {!color && <p className="mt-2 text-xs text-slate">Please choose a colour.</p>}
+            {color && stockOf(color) !== null && stockOf(color) > 0 && stockOf(color) <= 5 && (
+              <p className="mt-2 text-xs font-medium text-slate">Only {stockOf(color)} left in {color}.</p>
+            )}
           </div>
 
           <div className="mt-6 flex flex-wrap gap-4">

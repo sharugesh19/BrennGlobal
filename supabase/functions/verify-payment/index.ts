@@ -51,16 +51,14 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { data: order, error } = await supabase
-      .from("orders")
-      .update({ payment_status: "paid", razorpay_payment_id })
-      .eq("razorpay_order_id", razorpay_order_id)
-      .select("id")
-      .single();
+      const { data: orderId, error } = await supabase.rpc("confirm_order_paid", {
+      p_razorpay_order_id: razorpay_order_id,
+      p_payment_id: razorpay_payment_id,
+    });
 
-    if (error || !order) return json({ error: "Order not found" }, 404);
+    if (error || !orderId) return json({ error: "Order not found" }, 404);
 
-    return json({ success: true, orderId: order.id });
+    return json({ success: true, orderId });
   } catch (err) {
     console.error(err);
     return json({ error: "Something went wrong" }, 500);
