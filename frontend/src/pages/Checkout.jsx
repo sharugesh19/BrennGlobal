@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { useCartStore } from "../store/useCartStore.js";
 import { supabase } from "../lib/supabaseClient.js";
 
@@ -110,11 +111,11 @@ const Checkout = () => {
           state: form.state.trim(),
           pincode: form.pincode.trim(),
         },
-          items: items.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity, color: i.color || "" })),
+        items: items.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity, color: i.color || "" })),
       },
     });
 
-        if (error || !data?.razorpayOrderId) {
+    if (error || !data?.razorpayOrderId) {
       let serverMessage = data?.error;
       if (!serverMessage && error?.context && typeof error.context.json === "function") {
         try {
@@ -153,7 +154,7 @@ const Checkout = () => {
         if (verifyError || !result?.success) {
           setMessage(
             "Payment received but we could not confirm it. Please contact us with your payment ID: " +
-              response.razorpay_payment_id
+            response.razorpay_payment_id
           );
           setPaying(false);
           return;
@@ -179,6 +180,10 @@ const Checkout = () => {
   if (paidOrderId) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-40 text-center">
+        <Helmet>
+          <title>Order placed | Brenn Global</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <h1 className="text-3xl font-bold">Thank you! Order placed.</h1>
         <p className="mt-3 text-slate">
           Your payment was successful. Order reference:{" "}
@@ -194,6 +199,10 @@ const Checkout = () => {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-40 text-center">
+        <Helmet>
+          <title>Cart | Brenn Global</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <h1 className="text-3xl font-bold">Your cart is empty</h1>
         <p className="mt-3 text-slate">Add a product before checking out.</p>
         <Link to="/products" className="btn-dark mt-8 inline-flex">
@@ -212,6 +221,10 @@ const Checkout = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-40 sm:px-10 lg:px-16">
+      <Helmet>
+        <title>Checkout | Brenn Global</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <h1 className="text-4xl font-extrabold tracking-tight">Checkout</h1>
 
       <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-5">
