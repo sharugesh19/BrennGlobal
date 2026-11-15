@@ -42,6 +42,9 @@ create table if not exists public.products (
 create index if not exists idx_products_status_sort on public.products (status, sort_order);
 create index if not exists idx_products_slug on public.products (slug);
 
+-- Stock per colour. An empty {} means "not tracked". Example: {"Pink": 5, "Yellow": 0}
+alter table public.products
+  add column if not exists colour_stock jsonb not null default '{}'::jsonb;
 -- ============================================================================
 -- 2. WEBSITE CONTENT (singleton row, key = 'main')
 -- ============================================================================
@@ -68,16 +71,16 @@ create table if not exists public.website_content (
 
   footer      jsonb not null default '{
     "description": "Premium precision kitchen tools, engineered for professionals.",
-    "phone": "+1 (555) 123-4567",
-    "email": "hello@brennglobal.com",
-    "address": "Industrial Ave, Suite 400, Los Angeles, CA",
+    "phone": "+91 84899 99988",
+    "email": "support@brennglobal.in",
+    "address": "Udumalaipettai, Tamil Nadu, India",
     "social": {
-      "instagram": "https://instagram.com",
-      "facebook": "https://facebook.com",
-      "youtube": "https://youtube.com",
-      "linkedin": "https://linkedin.com"
+      "instagram": "",
+      "facebook": "",
+      "youtube": "",
+      "linkedin": ""
     },
-    "whatsappNumber": "15551234567"
+    "whatsappNumber": "918489999988"
   }'::jsonb,
 
   updated_at  timestamptz not null default now()
@@ -346,3 +349,77 @@ create policy "Admin can update orders" on public.orders
 
 -- No insert policy on purpose: only the create-order edge function
 -- (using the service role key) creates orders.
+
+-- ============================================================================
+-- 7. CONFIRM PAYMENT + REDUCE STOCK (called by verify-payment and razorpay-webhook)
+-- Marks the order paid and lowers colour_stock ONCE, even if both callers run.
+-- A colour with no number in colour_stock is "not tracked" and is left alone.
+-- ============================================================================
+
+create or replace function public.confirm_order_paid(p_razorpay_order_id text, p_payment_id text)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_order public.orders%rowtype;
+  v_item jsonb;
+  v_id uuid;
+begin
+  update public.orders
+     set payment_status = 'paid',
+         razorpay_payment_id = coalesce(p_payment_id, razorpay_payment_id)
+   where razorpay_order_id = p_razorpay_order_id
+     and payment_status is distinct from 'paid'
+  returning * into v_order;
+
+  if not found then
+    select id into v_id from public.orders where razorpay_order_id = p_razorpay_order_id;
+    return v_id;
+  end if;
+
+  for v_item in select value from jsonb_array_elements(v_order.items)
+  loop
+    update public.products
+       set colour_stock = jsonb_set(
+             colour_stock,
+             array[v_item->>'color'],
+             to_jsonb(greatest(0, (colour_stock->>(v_item->>'color'))::int - (v_item->>'quantity')::int))
+           )
+     where slug = v_item->>'slug'
+       and (v_item->>'color') is not null
+       and colour_stock ? (v_item->>'color');
+  end loop;
+
+  return v_order.id;
+end;
+$$;
+
+revoke all on function public.confirm_order_paid(text, text) from public, anon, authenticated;
+grant execute on function public.confirm_order_paid(text, text) to service_role;
+
+-- ============================================================================
+-- 8. TABLE PERMISSIONS (Supabase no longer grants these automatically on new
+-- tables since 30 Oct 2026). Row Level Security above still decides which rows
+-- each person can see or change.
+-- ============================================================================
+
+grant select on public.products to anon;
+grant select, insert, update, delete on public.products to authenticated;
+grant select, insert, update, delete on public.products to service_role;
+
+grant select on public.website_content to anon;
+grant select, insert, update on public.website_content to authenticated;
+grant select, insert, update, delete on public.website_content to service_role;
+
+grant insert on public.contact_messages to anon;
+grant select, insert, update, delete on public.contact_messages to authenticated;
+grant select, insert, update, delete on public.contact_messages to service_role;
+
+grant select on public.site_settings to anon;
+grant select, update on public.site_settings to authenticated;
+grant select, insert, update, delete on public.site_settings to service_role;
+
+grant select, update on public.orders to authenticated;
+grant select, insert, update, delete on public.orders to service_role;
