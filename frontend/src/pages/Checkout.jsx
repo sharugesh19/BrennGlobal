@@ -20,7 +20,7 @@ const loadRazorpay = () =>
     document.body.appendChild(script);
   });
 
-const Field = ({ name, label, type = "text", placeholder, value, error, onChange }) => (
+const Field = ({ name, label, type = "text", placeholder, inputMode, value, error, onChange }) => (
   <div>
     <label htmlFor={name} className="mb-1.5 block text-sm font-medium">
       {label}
@@ -32,6 +32,7 @@ const Field = ({ name, label, type = "text", placeholder, value, error, onChange
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      inputMode={inputMode}
       className={inputClass}
     />
     {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
@@ -267,7 +268,7 @@ const Checkout = () => {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <Field label="City" {...fieldProps("city")} />
             <Field label="State" {...fieldProps("state")} />
-            <Field label="Pincode" placeholder="6 digits" {...fieldProps("pincode")} />
+            <Field label="Pincode" placeholder="6 digits" inputMode="numeric" {...fieldProps("pincode")} />
           </div>
 
           {message && <p className="text-sm text-red-500">{message}</p>}

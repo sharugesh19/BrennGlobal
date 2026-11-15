@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
-import { FaInstagram, FaFacebookF, FaYoutube, FaLinkedinIn } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+
+// Paste Brenn's Instagram link between the quotes when Biju sends it. Leave it empty to hide the icon.
+const INSTAGRAM_URL = "";
 import useWebsiteContent from "../../hooks/useWebsiteContent.js";
 import brennLogo from "../../assets/brenn_logo.png";
 
@@ -21,10 +24,7 @@ const Footer = () => {
           </p>
           <div className="mt-6 flex gap-3">
             {[
-              { icon: <FaInstagram />, href: footer?.social?.instagram },
-              { icon: <FaFacebookF />, href: footer?.social?.facebook },
-              { icon: <FaYoutube />, href: footer?.social?.youtube },
-              { icon: <FaLinkedinIn />, href: footer?.social?.linkedin },
+              { icon: <FaInstagram />, href: INSTAGRAM_URL },
             ].filter((s) => s.href).map((s, i) => (
               <a
                 key={i}
