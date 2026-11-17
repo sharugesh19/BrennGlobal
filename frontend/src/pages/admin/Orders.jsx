@@ -19,6 +19,47 @@ const ORDER_STYLES = {
 const symbol = (currency) =>
   currency === "INR" ? "₹" : currency === "USD" ? "$" : `${currency} `;
 
+const csvCell = (value) => {
+  let text = value === null || value === undefined ? "" : String(value);
+  if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
+  return `"${text.replace(/"/g, '""')}"`;
+};
+
+const downloadOrdersCsv = (rows) => {
+  const header = [
+    "Order ID", "Date", "Payment status", "Order status", "Customer name", "Phone",
+    "Email", "Address", "City", "State", "Pincode", "Items", "Total", "Currency",
+    "Razorpay payment ID",
+  ];
+  const lines = rows.map((o) => [
+    o.id,
+    new Date(o.created_at).toLocaleString("en-IN"),
+    o.payment_status,
+    o.order_status,
+    o.customer_name,
+    o.customer_phone,
+    o.customer_email,
+    o.address,
+    o.city,
+    o.state,
+    o.pincode,
+    (o.items || []).map((i) => `${i.title}${i.color ? ` (${i.color})` : ""} x${i.quantity}`).join("; "),
+    o.total,
+    o.currency,
+    o.razorpay_payment_id || "",
+  ]);
+  const csv = [header, ...lines].map((r) => r.map(csvCell).join(",")).join("\r\n");
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `brenn-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+};
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,14 +99,24 @@ const Orders = () => {
           <h1 className="text-2xl font-bold">Orders</h1>
           <p className="mt-1 text-sm text-slate">Orders placed through the website.</p>
         </div>
-        <label className="flex items-center gap-2 text-sm text-slate">
-          <input
-            type="checkbox"
-            checked={showUnpaid}
-            onChange={(e) => setShowUnpaid(e.target.checked)}
-          />
-          Show unpaid attempts
-        </label>
+        <div className="flex flex-wrap items-center justify-end gap-4">
+          <label className="flex items-center gap-2 text-sm text-slate">
+            <input
+              type="checkbox"
+              checked={showUnpaid}
+              onChange={(e) => setShowUnpaid(e.target.checked)}
+            />
+            Show unpaid attempts
+          </label>
+          <button
+            type="button"
+            disabled={visible.length === 0}
+            onClick={() => downloadOrdersCsv(visible)}
+            className="rounded-full border border-ink/15 px-4 py-2 text-sm font-medium hover:border-ink/40 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Download orders (CSV)
+          </button>
+        </div>
       </div>
 
       <div className="mt-8 space-y-4">
