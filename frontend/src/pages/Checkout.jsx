@@ -276,6 +276,22 @@ const Checkout = () => {
           <button type="submit" disabled={paying} className="btn-primary w-full disabled:opacity-60">
             {paying ? "Please wait..." : "Pay Now"}
           </button>
+
+          <p className="text-center text-xs text-slate">
+            By paying, you agree to our{" "}
+            <Link to="/terms-and-conditions" target="_blank" className="underline hover:text-brenn-yellow">
+              Terms &amp; Conditions
+            </Link>
+            ,{" "}
+            <Link to="/refund-policy" target="_blank" className="underline hover:text-brenn-yellow">
+              Refund &amp; Cancellation
+            </Link>{" "}
+            and{" "}
+            <Link to="/shipping-policy" target="_blank" className="underline hover:text-brenn-yellow">
+              Shipping Policy
+            </Link>
+            .
+          </p>
         </form>
 
         <aside className="h-fit rounded-xl2 border border-ink/10 bg-cloud p-6 lg:col-span-2">

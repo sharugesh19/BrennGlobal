@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaInstagram } from "react-icons/fa";
 
 // Paste Brenn's Instagram link between the quotes when Biju sends it. Leave it empty to hide the icon.
-const INSTAGRAM_URL = "";
+const INSTAGRAM_URL = "https://www.instagram.com/brennglobal";
 import useWebsiteContent from "../../hooks/useWebsiteContent.js";
 import brennLogo from "../../assets/brenn_logo.png";
 
