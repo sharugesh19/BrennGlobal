@@ -29,10 +29,10 @@ const Hero = () => {
         {loading ? (
           <HeroSkeleton />
         ) : (
-          <div className="flex flex-col items-center gap-16 lg:flex-row lg:gap-24">
+          <div className="flex flex-col items-stretch gap-0 lg:flex-row lg:items-center lg:gap-24">
 
             {/* Left Content */}
-            <div className="w-full lg:flex-1 pt-10">
+            <div className="contents lg:block lg:flex-1 lg:pt-10">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -68,7 +68,7 @@ const Hero = () => {
                 initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
                 animate={{ opacity: 1, scale: 1, rotate: -2 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="relative mt-10 inline-block"
+                className="relative order-2 mt-10 inline-block self-start"
               >
                 <motion.div
                   aria-hidden
@@ -109,7 +109,7 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 flex flex-col gap-4 sm:flex-row"
+                className="order-2 mt-10 flex flex-col gap-4 sm:flex-row"
               >
                 <Button className="w-full text-center sm:w-auto shadow-lg shadow-brenn-yellow/20 hover:-translate-y-0.5 transition-transform" href="/products">
                   Buy Now
@@ -121,7 +121,7 @@ const Hero = () => {
             </div>
 
             {/* Right Content - Automated Splinter Grid */}
-            <div className="relative w-full lg:flex-1 mt-8 lg:mt-0 flex justify-center perspective-1000">
+            <div className="relative order-1 w-full lg:flex-1 -mt-8 mb-8 lg:mt-0 lg:mb-0 flex justify-center perspective-1000">
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
